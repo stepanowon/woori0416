@@ -1,1 +1,250 @@
+* slide-03
+const styles = {
+    color:"yellow", backgroundColor:"purple"
+}
+
+<div style={styles}>Hello</div>
+
+
+* slide-04
+const styles = {
+    listItemStyle : {
+       fontStyle:"italic", textDecoration:"underline"
+    },
+    dashStyle: {
+       backgroundColor: "#fff",
+       borderTop: "2px dashed gray"
+    }
+}
+export default styles;
+
+
+* slide-05
+......
+import styles from "./styles";
+......
+const App = () => {
+  ......
+  return (
+    <div className="container">
+      <h2>Hello {msg}!</h2>
+      <hr style={styles.dashStyle} />
+      {addResult(4, 3)}
+      <CountryList countries={list} />
+    </div>
+  );
+};
+
+export default App;
+
+
+* slide-06
+......
+import styles from "./styles";
+......
+
+const CountryItem = (props) => {
+  let item = props.countryitem;
+  return (
+    <li style={styles.listItemStyle} 
+       className={item.visited ? "list-group-item active" : "list-group-item"}>
+       {item.country}
+    </li>
+  );
+};
+
+export default CountryItem;
+
+
+* slide-09
+.test { color:blue; background-color: bisque; }
+--------------------------
+
+......
+import AppCssModule from "./App.module.css";
+......
+
+const App = () => {
+  ......
+  return (
+    <div className="container">
+      <h2 className={AppCssModule.test}>Hello {msg}!</h2>
+      <hr style={styles.dashStyle} />
+      {addResult(4, 3)}
+      <CountryList countries={list} />
+    </div>
+  );
+};
+
+export default App;
+
+
+
+* slide-11
+npm install styled-components
+
+* slide-12
+import styled  from 'styled-components';
+......
+
+//리턴값은 color:grey 스타일이 지정된 컴포넌트
+const Button = styled.button`
+  color: grey;
+`;
+
+//${} 내부에 작성한 함수가 리턴하는 값을 포함하여 스타일을 지정함
+//Title 컴포넌트로 color 속성을 전달 --> color 가 지정된 스타일을 가지는 h1 을 렌더링함
+const Title = styled.h1`
+  font-size: 1.5em;
+  text-align: center;
+  color: ${ ({ color })=> color };
+`;
+
+
+* slide-14
+import styled from "styled-components";
+
+type FooterPropsType = {
+  theme: string;
+};
+
+const Footer = styled.div<FooterPropsType>`
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 1rem;
+    background-color: ${(props) => (props.theme === "basic" ? "skyblue" : "yellow")};
+    text-align: center;
+`;
+
+export default Footer;
+
+
+* slide-15
+......
+import Footer from "./Footer";
+......
+const App = () => {
+  ......
+  const [theme] = useState<string>("basic");
+  return (
+    <div className="container">
+      <h2>Hello {msg}!</h2>
+      <hr style={styles.dashStyle} />
+      {addResult(4, 3)}
+      <CountryList countries={list} />
+      <Footer theme={theme}>styled-components test</Footer>
+    </div>
+  );
+};
+
+export default App;
+
+
+* slide-19
+npm create vite proptypes-test -- --template react-swc
+cd proptypes-test
+npm install
+
+
+* slide-20
+import React from "react";
+
+const Calc = (props) => {
+  let result: number = 0;
+  switch (props.oper) {
+    case "+":
+      result = props.x + props.y;
+      break;
+    case "*":
+      result = props.x * props.y;
+      break;
+    default:
+      result = 0;
+  }
+  return (
+    <div>
+      <h3>연산 방식 : {props.oper}</h3>
+      <hr />
+      <div>
+        {props.x} {props.oper} {props.y} = {result}
+      </div>
+    </div>
+  );
+};
+
+export default Calc;
+
+
+* slide-21
+import React, { useState } from "react";
+import Calc from "./Calc";
+
+const App = () => {
+  const [x, setX] = useState(100);
+  const [y, setY] = useState (200);
+  const [oper, setOper] = useState("+");
+
+  return (
+    <div>
+      <Calc x={x} y={y} oper={oper} />
+    </div>
+  );
+};
+
+export default App;
+
+
+* slide-22
+import React from "react";
+import PropTypes from "prop-types";
+
+......(생략-기존 컴포넌트 코드는 그대로)
+const calcChecker = (props, propName, componentName) => {
+  if (propName === "oper") {
+    if (props[propName] !== "+" && props[propName] !== "*") {
+      return new Error(`${propName}속성의 값은
+        반드시 '+', '*'만 허용합니다(at ${componentName}).`);
+    }
+  }
+};
+
+Calc.propTypes = {
+  x: PropTypes.number.isRequired,
+  y: PropTypes.number.isRequired,
+  oper: calcChecker,
+};
+
+export default Calc;
+
+
+* slide-23
+import React, { useState } from "react";
+import Calc from "./Calc";
+
+const App = () => {
+  const [x, setX] = useState(101);
+  const [y, setY] = useState("ab");
+  const [oper, setOper] = useState("&");
+
+  return (
+    <div>
+      <Calc x={x} y={y} oper={oper} />
+    </div>
+  );
+};
+
+export default App;
+
+
+
+
+
+
+
+
+
+
+
 
